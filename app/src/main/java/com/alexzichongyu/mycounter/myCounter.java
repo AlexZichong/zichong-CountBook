@@ -1,24 +1,34 @@
+/**
+ * myCounter Class
+ * Version 1.0
+ * Created by AlexZichongYu on 2017-09-29.
+ *
+ * Copyright notice: this project has been created by Alex Zichong Yu for assignment purpose for Comput 301 in year 2017, all rights reserved.
+ */
+
+
+
 package com.alexzichongyu.mycounter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by AlexZichongYu on 2017-09-29.
+ * it gives helps other classes to edit the array list when we need access to the data of the counter list
  */
 
 public class myCounter {
-    // in initialization
+
     private String name;
     private String comment;
     private int currentValue;
     private int initValue;
     private Date date;
 
-    public myCounter(String name, int initValue, String comment, Date date) {
+    public myCounter(String name, int initValue, int currentValue, String comment, Date date) {
         this.name = name;
         this.initValue = initValue;
-        this.currentValue = initValue;
+        this.currentValue = currentValue;
         this.comment = comment;
         this.date = date;
 
@@ -77,7 +87,7 @@ public class myCounter {
     // set date for the counter
     public String currentDate() {
         Date dd = this.date;
-        SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
         return dt.format(dd);
     }
 

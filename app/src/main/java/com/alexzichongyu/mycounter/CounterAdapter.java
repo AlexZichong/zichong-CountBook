@@ -1,3 +1,11 @@
+/**
+ * CounterAdapter Class
+ * Version 1.0
+ * Created by AlexZichongYu on 2017-09-29.
+ *
+ * Copyright notice: this project has been created by Alex Zichong Yu for assignment purpose for Comput 301 in year 2017, all rights reserved.
+ */
+
 package com.alexzichongyu.mycounter;
 
 import android.app.Activity;
@@ -9,7 +17,6 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,41 +24,45 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by AlexZichongYu on 2017-09-29.
+ * CounterAdapter works like a projector to display each array item
+ *
  */
-
 
 public class CounterAdapter extends ArrayAdapter<myCounter> {
     private Context cContext;
     private ArrayList<myCounter> counterList = new ArrayList<myCounter>();
-    //private int layoutId;
 
+    /**
+     *
+     * @param context context ib the array list
+     * @param list the array list itself
+     */
+    public CounterAdapter(@NonNull Context context, @LayoutRes ArrayList<myCounter> list) {
 
-    public CounterAdapter(@NonNull Context context, /*int textViewResourceId,*/ @LayoutRes ArrayList<myCounter> list) {
-        // super(context, textViewResourceId, items);
         super(context, 0, list);
         cContext = context;
         counterList = list;
-
-        //this.context = context;
-        //this.layoutId = textViewResourceId;
-        //this.counter = items;
 
     }
 
     @NonNull
     @Override
 
-    public View getView(final int position, @NonNull View convertView, @NonNull ViewGroup parent) {
+    public View getView( final int position, @NonNull View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
        // Context context = this.getContext();
+
+
+
+
 
         if (listItem == null) {
 
             listItem = LayoutInflater.from(cContext).inflate(R.layout.list_item, parent, false);
+
+            // When user long click we pop out the alert dialog to double check if user want to delete the counter
 
             listItem.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -67,6 +78,8 @@ public class CounterAdapter extends ArrayAdapter<myCounter> {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     // continue with delete
+                                    counterList.remove(position);
+
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -77,92 +90,64 @@ public class CounterAdapter extends ArrayAdapter<myCounter> {
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
 
-                    // https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
-
-
+                    //Reference https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
 
                     return false;
                 }
             });
 
-
-
+            /**
+             * since we need to "project" each column of the array list we will have to send the value for each block to the the user interface
+             */
 
             final myCounter currentCounter = counterList.get(position);
 
             TextView nameTextView = listItem.findViewById(R.id.textView_name);
             nameTextView.setText(currentCounter.getName());
 
+            final Integer position_index = position;
+            //nameTextView.setText(display_pos.toString());
+
             final TextView currentValueTextView = listItem.findViewById(R.id.textView_current);
             Integer value = currentCounter.getCurrentValue();
+
             currentValueTextView.setText(value.toString());
 
             TextView dateTextView = listItem.findViewById(R.id.textView_date);
             dateTextView.setText(currentCounter.currentDate());
 
+
             listItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(cContext, editCounter.class);
+
+                    Intent intent = new Intent(cContext, EditCounter.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("name",currentCounter.getName() );
                     bundle.putInt("current", currentCounter.getCurrentValue());
-                    //bundle.putString("comment",currentCounter.getComment());
-                    bundle.putInt("position", position);
+                    bundle.putString("comment",currentCounter.getComment());
+                    bundle.putInt("position", position_index);
                     bundle.putInt("initial",currentCounter.getInitValue());
                     intent.putExtra("Bundle",bundle);
                     ((Activity)cContext).startActivityForResult(intent, 1);
 
                 }
-
             });
-
-
-
-
         }
-
-
 
         return listItem;
     }
 
-    public void refresh(ArrayList<myCounter> newList) {
-        counterList.clear();
-        counterList.addAll(newList);
+    public void remove(int position) {
+        counterList.remove(position);
+        this.notifyDataSetChanged();
+    }
+
+    public void replace(int position, myCounter counter) {
+        counterList.set(position, counter);
         this.notifyDataSetChanged();
     }
 }
-
-
-
-
-
-
-/*
-            //LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-            convertView = inflater.inflate(layoutId,parent,false);
-
-
-            //Where to put it
-            //RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder;
-            viewHolder.showName = (TextView) convertView.findViewById(R.id.textView_name);
-            viewHolder.showNumber = (TextView) convertView.findViewById(R.id.textView_current);
-            viewHolder.showDate = (TextView) convertView.findViewById(R.id.textView_date);
-            convertView.setTag(viewHolder);
-
-            */
-
-
-        /*else {
-            viewHolder = (viewHolder) convertView.getTag();
-
-        }  */
-
-        //myCounter item = counter.get(position);
-
-
-
 
 
 

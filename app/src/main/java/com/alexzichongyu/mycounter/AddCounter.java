@@ -1,3 +1,11 @@
+/**
+ * AddCounter Class
+ * Version 1.0
+ * Created by AlexZichongYu on 2017-09-29.
+ *
+ * Copyright notice: this project has been created by Alex Zichong Yu for assignment purpose for Comput 301 in year 2017, all rights reserved.
+ */
+
 package com.alexzichongyu.mycounter;
 
 import android.content.Intent;
@@ -7,7 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class addCounter extends AppCompatActivity {
+
+
+public class AddCounter extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +34,12 @@ public class addCounter extends AppCompatActivity {
                         EditText editInitial = (EditText) findViewById(R.id.editInitial);
                         EditText editComment = (EditText) findViewById(R.id.editComment);
 
+
+
                         String name = editName.getText().toString();
                         String initial = editInitial.getText().toString();
                         String comment = editComment.getText().toString();
+                        String current = initial;
 
 
                 // check the input make sure all entering is valid
@@ -44,6 +57,7 @@ public class addCounter extends AppCompatActivity {
                 intent.putExtra("name", name);
                 intent.putExtra("initial", initial);
                 intent.putExtra("comment", comment);
+                intent.putExtra("current", current);
                 setResult(RESULT_OK, intent);
                 finish();
 
